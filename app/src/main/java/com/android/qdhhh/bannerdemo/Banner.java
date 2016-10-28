@@ -46,9 +46,9 @@ public class Banner extends FrameLayout {
 
     private int currentPosition = 0; // 当前ViewPager的位置
 
-    private long releaseTime = 0; // 上次轮播的事件
+    private long releaseTime = 0; // 上次轮播的时间
 
-    private int count;
+    private int count = 10; //ViewPager的页面数量
 
     private ViewPagerAdapter adapter;
 
@@ -137,7 +137,6 @@ public class Banner extends FrameLayout {
 
         // 设置指示器
         ImageView point = null;
-        ClickListener clickListener = new ClickListener();
         for (int i = 0; i < count; i++) {
             point = new ImageView(context);
             point.setTag(i);
@@ -145,7 +144,6 @@ public class Banner extends FrameLayout {
                     20, 20);
             lp.setMargins(10, 0, 10, 0);
             point.setLayoutParams(lp);
-            point.setOnClickListener(clickListener);
             point.setBackgroundResource(R.drawable.selector_banner_point);
             banner_point_id.addView(point, i);
         }
@@ -159,17 +157,6 @@ public class Banner extends FrameLayout {
         banner_vp_id.setCurrentItem(currentPosition);
         setIndicator(0);
         setWheel(true);
-    }
-
-
-    private final class ClickListener implements OnClickListener {
-
-        @Override
-        public void onClick(View v) {
-            int position = banner_vp_id.getCurrentItem() -
-                    (banner_vp_id.getCurrentItem() % count) + (int) v.getTag();
-            banner_vp_id.setCurrentItem(position);
-        }
     }
 
 
@@ -218,6 +205,9 @@ public class Banner extends FrameLayout {
 
     }
 
+    /**
+     * ViewPager的滑动监听
+     */
     private final class PageChangeListener implements ViewPager.OnPageChangeListener {
 
         @Override
@@ -246,6 +236,12 @@ public class Banner extends FrameLayout {
     }
 
 
+    /**
+     * 设置TextView的内容
+     *
+     * @param position
+     * @param text
+     */
     private void setTextView(int position, String text) {
         banner_tv_id.setText(position + "hahahahaha");
     }
@@ -281,22 +277,13 @@ public class Banner extends FrameLayout {
     }
 
     /**
-     * 设置轮播暂停时间,单位毫秒（默认3000毫秒）
+     * 设置轮播间隔时间
      *
      * @param delayTime
      */
-    public void setDelayT(int delayTime) {
+    public void setDelayTime(int delayTime) {
         this.delayTime = delayTime;
     }
 
 
-    /**
-     * 轮播控件的监听事件接口
-     *
-     * @author minking
-     */
-    public static interface ImageCycleViewListener {
-
-
-    }
 }
